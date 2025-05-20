@@ -1,8 +1,8 @@
 
-import * as Koa from 'koa';
-import * as Router from 'koa-router';
-import * as logger from 'koa-logger';
-import * as json from 'koa-json';
+import Koa from 'koa';
+import Router from 'koa-router';
+import logger from 'koa-logger';
+import json from 'koa-json';
 
 const app = new Koa();
 const router = new Router();
@@ -19,6 +19,12 @@ router.get('/', async (ctx) => {
 app.use(router.routes());
 app.use(router.allowedMethods());
 
-app.listen(3000, () => {
-  console.log('Server is running on http://localhost:3000');
-});
+// Main entry point for the application
+if (require.main === module) {
+  app.listen(3000, () => {
+    console.log('Server is running on http://localhost:3000');
+  });
+}
+
+// Export for tests
+export default app;
