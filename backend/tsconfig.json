@@ -11,6 +11,18 @@
     "sourceMap": true,
     "outDir": "./dist",
     "baseUrl": "./",
+    "paths": {
+      "src/*": [
+        "src/*"
+      ]
+    },
+    "types": [
+      "node"
+    ],
+    "typeRoots": [
+      "./node_modules/@types",
+      "./src/types"
+    ],
     "incremental": true,
     "skipLibCheck": true,
     "strictNullChecks": false,
@@ -18,5 +30,19 @@
     "strictBindCallApply": false,
     "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": false
-  }
+  },
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.js",
+    "src/**/*.json",
+    "src/**/*.graphql",
+    "src/**/*.gql"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist",
+    "coverage",
+    "test",
+    "**/*.spec.ts"
+  ],
 }
