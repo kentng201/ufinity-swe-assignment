@@ -2,7 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import process from 'process';
 import { Sequelize, DataTypes } from 'sequelize';
-import configFile from 'src/config/config.js';
+import configFile from 'src/config/config';
 
 const basename = path.basename(__filename);
 const env = process.env.NODE_ENV || 'development';
@@ -24,6 +24,7 @@ fs
       file.indexOf('.') !== 0 &&
       file !== basename &&
       file.slice(-3) === '.ts' &&
+      !file.endsWith('.d.ts') &&
       file.indexOf('.test.ts') === -1
     );
   })

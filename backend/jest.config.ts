@@ -4,7 +4,7 @@ import { compilerOptions } from './tsconfig.json';
 export default {
   preset: 'ts-jest',
   testEnvironment: 'node',
-  collectCoverage: true,
+  // collectCoverage: true,
   moduleNameMapper: pathsToModuleNameMapper(
     compilerOptions.paths || {},
     { prefix: '<rootDir>/' }

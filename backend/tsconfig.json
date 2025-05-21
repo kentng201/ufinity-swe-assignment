@@ -10,6 +10,7 @@
     "target": "es2019",
     "sourceMap": true,
     "outDir": "./dist",
+    "resolveJsonModule": true,
     "baseUrl": "./",
     "paths": {
       "src/*": [
@@ -17,7 +18,8 @@
       ]
     },
     "types": [
-      "node"
+      "node",
+      "jest"
     ],
     "typeRoots": [
       "./node_modules/@types",
@@ -31,17 +33,10 @@
     "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": false
   },
-  "include": [
-    "src/**/*.ts",
-    "src/**/*.js",
-    "src/**/*.json",
-    "src/**/*.graphql",
-    "src/**/*.gql"
-  ],
   "exclude": [
     "node_modules",
     "dist",
     "coverage",
     "**/*.spec.ts"
-  ],
+  ]
 }
