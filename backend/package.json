@@ -5,6 +5,7 @@
   "scripts": {
     "start": "nodemon --watch 'src/**/*.ts' --exec 'ts-node' -r tsconfig-paths/register -r ./src/utils/loadEnv src/index.ts",
     "build": "tsc --project tsconfig.json && tsc-alias --project tsconfig.json",
+    "serve": "node dist/src/index.js",
     "test": "jest"
   },
   "keywords": [],
@@ -20,7 +21,8 @@
     "koa-router": "^13.0.1",
     "mysql2": "^3.14.1",
     "sequelize": "^6.37.7",
-    "sequelize-cli": "^6.6.3"
+    "sequelize-cli": "^6.6.3",
+    "zod": "^3.25.12"
   },
   "devDependencies": {
     "@types/jest": "^29.5.14",
