@@ -1,6 +1,6 @@
 import Router from 'koa-router';
-import { createSchoolClass } from 'src/controllers/school-class.controller';
-import { createSchoolTeacher } from 'src/controllers/school-teacher.controller';
+import { createSchoolClass, getAllSchoolClasses } from 'src/controllers/school-class.controller';
+import { createSchoolTeacher, getAllSchoolTeachers } from 'src/controllers/school-teacher.controller';
 import { SequelizeDb } from 'src/types/sequelize-db';
 
 const router = new Router<undefined, {
@@ -15,8 +15,10 @@ router.get('/api', async (ctx) => {
 
 // School Teacher Routes
 router.post('/api/teachers', createSchoolTeacher);
+router.get('/api/teachers', getAllSchoolTeachers);
 
 // School Class Routes
 router.post('/api/classes', createSchoolClass);
+router.get('/api/classes', getAllSchoolClasses);
 
 export default router;

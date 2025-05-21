@@ -10,12 +10,23 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      SchoolClass.belongsTo(models.SchoolTeacher, {
+        foreignKey: 'schoolTeacherId',
+        as: 'formTeacher',
+      });
+
     }
   }
   SchoolClass.init({
     level: DataTypes.STRING,
     name: DataTypes.STRING,
-    schoolTeacherId: DataTypes.INTEGER
+    schoolTeacherId: {
+      type: DataTypes.INTEGER,
+      references: {
+        model: 'SchoolTeacher',
+        key: 'id',
+      },
+    }
   }, {
     sequelize,
     modelName: 'SchoolClass',
