@@ -5,6 +5,7 @@ import Koa from 'koa';
 import logger from 'koa-logger';
 import router from 'src/routes';
 import json from 'koa-json';
+import bodyParser from 'koa-bodyparser';
 import { databaseMiddleware } from 'src/middlewares/database';
 
 const app = new Koa();
@@ -13,6 +14,7 @@ const app = new Koa();
 // Middlewares
 app.use(logger());
 app.use(json());
+app.use(bodyParser());
 app.use(databaseMiddleware);
 app.use(router.routes());
 app.use(router.allowedMethods());
