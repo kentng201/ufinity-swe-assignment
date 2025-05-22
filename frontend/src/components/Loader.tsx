@@ -1,7 +1,7 @@
-import ReactLoading from 'react-loading';
+import { SyncLoader } from 'react-spinners';
 
 export default function Loader() {
-  return <div className="absolute size-full bg-[rgb(44,44,44)] bg-opacity-20 z-2 flex justify-center items-center">
-    <ReactLoading type={'spinningBubbles'} color={'#135bb4'} height={'8%'} width={'8%'} />
+  return <div className="absolute size-full bg-[rgba(44,44,44,0.6)] z-20 flex justify-center items-center">
+    <SyncLoader color={'#135bb4'} loading={true} size={20} />
   </div>;
 }
