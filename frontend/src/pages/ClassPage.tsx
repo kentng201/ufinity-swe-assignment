@@ -1,18 +1,27 @@
 import { PageContent } from "../layouts/PageContent";
 import { Card } from "../components/Card";
 import { Button } from "../components/Button";
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { iconWithClassName } from "../utils/icon-with-classname";
 import { ArrowLeft } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { Input } from "../components/Input";
 import { Select } from "../components/Select";
-import type { GetTeacherData } from "../types/Teacher";
+import { useCreateClassMutation, useGetAllTeachersQuery } from "../store/api/schoolApi";
+import { useHeaderState } from "../hooks/useHeaderState";
 
 export function ClassPage() {
   const navigate = useNavigate();
+
   const StyledLeft = useMemo(() => iconWithClassName(ArrowLeft, "w-5 h-5 text-primary"), []);
-  const [teachers, setTeachers] = useState<GetTeacherData[]>([]);
+
+  const { data: teachers, isLoading } = useGetAllTeachersQuery();
+  const [createClass] = useCreateClassMutation();
+  const { setLoading } = useHeaderState();
+
+  useEffect(() => {
+    setLoading(isLoading);
+  }, [isLoading, setLoading]);
 
   // forms
   const [classLevel, setClassLevel] = useState<string>();
@@ -22,6 +31,41 @@ export function ClassPage() {
   const onAddNewTeacher = useCallback(() => {
     navigate("/teachers/add?from=class");
   }, [navigate]);
+
+  const [errorMessage, setErrorMessage] = useState<Record<string, string>>({});
+  const validate = useCallback(() => {
+    const errors: Record<string, string> = {};
+    if (!classLevel) {
+      errors.classLevel = "Class level is required";
+    }
+    if (!className) {
+      errors.className = "Class name is required";
+    }
+    if (!formTeacher) {
+      errors.formTeacher = "Form teacher is required";
+    }
+    setErrorMessage(errors);
+    return Object.keys(errors).length === 0;
+  }, [classLevel, className, formTeacher]);
+
+  const onSubmit = useCallback(() => {
+    if (validate()) {
+      setLoading(true);
+      createClass({
+        level: classLevel! as 'Primary 1' | 'Primary 2' | 'Primary 3' | 'Primary 4' | 'Primary 5' | 'Primary 6',
+        name: className!,
+        teacherEmail: formTeacher!,
+      }).unwrap().then(() => {
+        setLoading(false);
+        navigate("/classes");
+      }
+      ).catch((error) => {
+        setLoading(false);
+        console.error("Failed to create class: ", error);
+      }
+      );
+    }
+  }, [validate]);
 
   return <PageContent>
     <div className="p-8">
@@ -45,6 +89,7 @@ export function ClassPage() {
           { value: "Primary 6", label: "Primary 6" },
         ]}
         onSelect={(value) => setClassLevel(value!)}
+        errorMessage={errorMessage.classLevel}
       />
       <Input
         className="w-1/2 md:w-1/3"
@@ -53,12 +98,13 @@ export function ClassPage() {
         type="text"
         value={className ?? ""}
         onChange={(text) => setClassName(text)}
+        errorMessage={errorMessage.className}
       />
       <Select
         className="w-1/2 md:w-1/3"
         label="Form Teacher"
         placeholder="Assign a form teacher"
-        options={teachers.map((teacher) => ({
+        options={(teachers || []).map((teacher) => ({
           value: teacher.email,
           label: teacher.name,
         }))}
@@ -70,6 +116,7 @@ export function ClassPage() {
             <div className="cursor-pointer underline" onClick={onAddNewTeacher}>Add a teacher</div>
           </div>
         }
+        errorMessage={errorMessage.formTeacher}
       />
     </Card>
     <div className="flex flex-row justify-end gap-4 p-8">
@@ -84,6 +131,7 @@ export function ClassPage() {
       </Button>
       <Button
         className="border-2 bg-primary text-white font-medium"
+        onClick={onSubmit}
       >Add Class</Button>
     </div>
   </PageContent >

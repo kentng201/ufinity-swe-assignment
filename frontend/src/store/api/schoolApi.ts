@@ -12,6 +12,7 @@ export const schoolApi = createApi({
     getAllTeachers: builder.query<GetTeacherData[], void>({
       query: () => '/teachers',
       providesTags: ['Teachers'],
+      transformResponse: (response: { data: GetTeacherData[] }) => response.data,
     }),
     createTeacher: builder.mutation<void, CreateTeacherData>({
       query: (body) => ({
@@ -26,6 +27,7 @@ export const schoolApi = createApi({
     getAllClasses: builder.query<GetClassData[], void>({
       query: () => '/classes',
       providesTags: ['Classes'],
+      transformResponse: (response: { data: GetClassData[] }) => response.data,
     }),
     createClass: builder.mutation<void, CreateClassData>({
       query: (body) => ({

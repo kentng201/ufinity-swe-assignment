@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Card } from "../components/Card";
 import { PageContent } from "../layouts/PageContent";
 import { Button } from "../components/Button";
@@ -7,6 +7,8 @@ import { Plus } from 'lucide-react';
 import { iconWithClassName } from "../utils/icon-with-classname";
 import type { GetClassData } from "../types/Class";
 import { Table } from "../components/Table";
+import { useHeaderState } from "../hooks/useHeaderState";
+import { useGetAllClassesQuery } from "../store/api/schoolApi";
 
 
 function AddClassButton() {
@@ -55,17 +57,14 @@ function ClassTable({
 }
 
 export function ClassListPage() {
-  const [classes, setClasses] = useState<GetClassData[]>([
-    {
-      name: "Class 1A",
-      level: "Primary 1",
-      formTeacher: {
-        name: "John Doe",
-        email: "johndoe@gmail.com",
-      },
-    },
-  ]);
-  const hasClass = useMemo(() => classes.length > 0, [classes]);
+  const { data: classes, isLoading } = useGetAllClassesQuery();
+  const { setLoading } = useHeaderState();
+
+  useEffect(() => {
+    setLoading(isLoading);
+  }, [isLoading, setLoading]);
+
+  const hasClass = useMemo(() => classes?.length || 0 > 0, [classes]);
 
   return (
     <PageContent>
