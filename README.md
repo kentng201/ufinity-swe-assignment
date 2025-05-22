@@ -1,4 +1,4 @@
-# GatherSG SWE Task
+# Ufinity SWE Assignment
 
 This is a take home assignment for the Full Stack Engineer position at Ufinity. The code repository contains two folders:
 
