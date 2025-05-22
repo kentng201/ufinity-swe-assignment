@@ -1,6 +1,8 @@
 import type { JSX } from "react";
 import React from "react";
 import { HeaderStateContext, useHeaderStateContext } from "../hooks/useHeaderState";
+import { Provider as ReduxProvider } from 'react-redux';
+import { store } from "../store/store";
 
 /**
  * This component is used to flatten the nested children of a component.
@@ -35,6 +37,8 @@ export default function Providers({
 }) {
   return <ChildrenFlattener>
     <HeaderStateContext.Provider value={useHeaderStateContext()} />
-    {children}
+    <ReduxProvider store={store}>
+      {children}
+    </ReduxProvider>
   </ChildrenFlattener>
 }
