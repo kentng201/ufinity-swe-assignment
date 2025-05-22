@@ -7,6 +7,7 @@ import router from 'src/routes';
 import json from 'koa-json';
 import bodyParser from 'koa-bodyparser';
 import { databaseMiddleware } from 'src/middlewares/database';
+import cors from '@koa/cors';
 
 const app = new Koa();
 
@@ -15,6 +16,7 @@ const app = new Koa();
 app.use(logger());
 app.use(json());
 app.use(bodyParser());
+app.use(cors());
 app.use(databaseMiddleware);
 app.use(router.routes());
 app.use(router.allowedMethods());
