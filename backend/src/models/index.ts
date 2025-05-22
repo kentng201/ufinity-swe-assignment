@@ -17,13 +17,18 @@ if (config.use_env_variable) {
   sequelize = new Sequelize(config.database, config.username, config.password, config);
 }
 
+let fileExtension = '.js';
+if (env !== 'production') {
+  fileExtension = '.ts';
+}
+
 fs
   .readdirSync(__dirname)
   .filter(file => {
     return (
       file.indexOf('.') !== 0 &&
       file !== basename &&
-      file.slice(-3) === '.ts' &&
+      file.slice(-3) === fileExtension &&
       !file.endsWith('.d.ts') &&
       file.indexOf('.test.ts') === -1
     );
