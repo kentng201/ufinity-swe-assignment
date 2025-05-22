@@ -7,6 +7,12 @@ This is a take home assignment for the Full Stack Engineer position at Ufinity. 
 
 ## Setup Instructions
 
+### Prerequisites
+
+- Node.js (v18.16.0 or higher)
+- MySQL (v8.0.34 or higher)
+- npm (v9.5.0 or higher)
+
 ### Backend
 
 1. Navigate to the `backend` directory.
