@@ -108,3 +108,9 @@ The frontend will be running on `http://localhost:5173`.
 - Some part of the backend code is written in Javascript due to the legacy of Sequelize that cannot fully accept Typescript. I have used Typescript for the rest of the code.
 - The frontend is built using React.js, Redux, and Tailwind CSS.
 - Frontend is fully written in Typescript.
+
+## Additional Information
+
+### Postman Collection
+
+[Download Postman Collection](/backend.postman_collection.json)
