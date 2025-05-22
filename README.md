@@ -5,6 +5,11 @@ This is a take home assignment for the Full Stack Engineer position at Ufinity. 
 - `backend`: This folder contains the backend code for the application.
 - `frontend`: This folder contains the frontend code for the application.
 
+## Demo
+
+- `NodeJS API Server`: [Backend Demo](https://ufinity-assignment-backend.kentng201.com/api)
+- `React Front Page`: [Frontend Demo](https://ufinity-assignment.kentng201.com)
+
 ## Setup Instructions
 
 ### Prerequisites
@@ -12,6 +17,13 @@ This is a take home assignment for the Full Stack Engineer position at Ufinity. 
 - Node.js (v18.16.0 or higher)
 - MySQL (v8.0.34 or higher)
 - npm (v9.5.0 or higher)
+
+### Environment Zip Files
+
+The `.env` files are not included in the repository for security reasons. You can download the zip files from the links below and extract them to the respective directories.
+
+- `env.backend.zip`: [Download here](https://drive.google.com/file/d/1nRQXynhGbeAQF2wTDM2MY2iCFiQeZiIO/view?usp=sharing)
+- `env.frontend.zip`: [Download here](https://drive.google.com/file/d/1vbQYQ2VKMmWOJOBheiAWF9A5NvsKZ5Vu/view?usp=sharing)
 
 ### Backend
 
@@ -66,9 +78,8 @@ The server will be running on `http://localhost:3000`.
    npm install
    ```
 
-3. Extract the `env.frontend` zip file, it contains three files:
+3. Extract the `env.frontend` zip file, it contains one files:
    - `.env` - This file contains env file used for production environment.
-   - `.env.development` - This file contains env file used for development environment.
 4. Copy these files to the `frontend` directory.
 5. Run the following command to start a dev server:
 
