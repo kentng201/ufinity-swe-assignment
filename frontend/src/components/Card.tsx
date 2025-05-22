@@ -10,7 +10,7 @@ export function Card({
   style?: React.CSSProperties;
 }) {
   return <div className={cn(
-    "bg-white shadow-md rounded-md p-4",
+    "bg-white shadow-md rounded-md p-8",
     className,
   )} style={style}>
     {children}

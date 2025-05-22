@@ -31,7 +31,7 @@ export function Header() {
   const navigate = useNavigate();
   const { active, setActive } = useHeaderState();
 
-  return <div className="h-24 shadow-sm w-full bg-white flex flex-row items-center px-8 gap-2">
+  return <div className="min-h-24 shadow-sm w-full bg-white flex flex-row items-center px-8 gap-2">
     <img src={logo} alt="Logo" className="h-10" />
     <div className="w-18" />
     <HeaderOption

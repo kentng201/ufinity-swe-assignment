@@ -17,19 +17,23 @@ function SuspenseLoader({ children }: { children: React.ReactNode }) {
   );
 }
 
+function ErrorPage() {
+  return <SuspenseLoader>
+    <div className="h-dvh w-dvw bg-white flex flex-col">
+      <Header />
+      <PageContent className="flex items-center justify-center">
+        <h1 className="text-4xl font-bold text-primary">Sorry!</h1>
+        <p className="mt-4 text-lg text-gray-700">The page you are looking for was not found.</p>
+      </PageContent>
+    </div>
+  </SuspenseLoader>;
+}
+
 const router = createBrowserRouter([
   {
     path: "/",
     element: <Container />,
-    errorElement: <SuspenseLoader>
-      <div className="h-dvh w-dvw bg-white flex flex-col">
-        <Header />
-        <PageContent className="flex items-center justify-center">
-          <h1 className="text-4xl font-bold text-primary">Sorry!</h1>
-          <p className="mt-4 text-lg text-gray-700">The page you are looking for was not found.</p>
-        </PageContent>
-      </div>
-    </SuspenseLoader>,
+    // errorElement: <ErrorPage />,
     children: [
       {
         path: "/",

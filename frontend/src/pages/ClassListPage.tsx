@@ -5,7 +5,8 @@ import { Button } from "../components/Button";
 import { useNavigate } from "react-router-dom";
 import { Plus } from 'lucide-react';
 import { iconWithClassName } from "../utils/icon-with-classname";
-
+import type { GetClassData } from "../types/Class";
+import { Table } from "../components/Table";
 
 
 function AddClassButton() {
@@ -23,15 +24,45 @@ function AddClassButton() {
   </Button>;
 }
 
-export function ClassListPage() {
-  const [classes, setClasses] = useState<any[]>([
+function ClassTable({
+  classes,
+}: {
+  classes: GetClassData[];
+}) {
+  const columns = [
     {
-      name: "Math 101",
-      students: ["Alice", "Bob", "Charlie"],
+      header: '#',
+      cell: (info: any) => info.row.index + 1,
     },
     {
-      name: "History 201",
-      students: ["David", "Eve", "Frank"],
+      accessorKey: 'name',
+      header: 'Name',
+    },
+    {
+      accessorKey: 'level',
+      header: 'Level',
+    },
+    {
+      accessorKey: 'formTeacher.name',
+      header: 'Form Teacher',
+    },
+  ];
+
+  return <Table
+    data={classes}
+    columns={columns}
+  />;
+}
+
+export function ClassListPage() {
+  const [classes, setClasses] = useState<GetClassData[]>([
+    {
+      name: "Class 1A",
+      level: "Primary 1",
+      formTeacher: {
+        name: "John Doe",
+        email: "johndoe@gmail.com",
+      },
     },
   ]);
   const hasClass = useMemo(() => classes.length > 0, [classes]);
@@ -45,16 +76,10 @@ export function ClassListPage() {
           {hasClass && <AddClassButton />}
         </div>
       </div>
-      <Card className="mx-8" style={{ height: "calc(100% - 10rem)" }}>
+      <Card className="mx-8" style={{ height: "calc(100% - 20rem)" }}>
         {
           hasClass && (
-            <ul className="list-disc pl-8">
-              {classes.map((classItem, index) => (
-                <li key={index} className="mb-2">
-                  {classItem.name}
-                </li>
-              ))}
-            </ul>
+            <ClassTable classes={classes} />
           )
         }
         {
