@@ -15,6 +15,15 @@ module.exports = (sequelize, DataTypes) => {
         as: 'classes',
       });
     }
+
+    public toJSON() {
+      const values = { ...this.get() };
+      // hide sensitive system fields
+      delete values.id;
+      delete values.createdAt;
+      delete values.updatedAt;
+      return values;
+    }
   }
   SchoolTeacher.init({
     name: DataTypes.STRING,

@@ -14,7 +14,15 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: 'schoolTeacherId',
         as: 'formTeacher',
       });
+    }
 
+    public toJSON() {
+      const values = { ...this.get() };
+      // hide sensitive system fields
+      delete values.id;
+      delete values.createdAt;
+      delete values.updatedAt;
+      return values;
     }
   }
   SchoolClass.init({

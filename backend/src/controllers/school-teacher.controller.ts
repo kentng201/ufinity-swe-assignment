@@ -31,7 +31,7 @@ export const createSchoolTeacher = async (ctx: AppContext) => {
     ctx.status = 201;
     ctx.body = {
       message: 'Teacher created successfully',
-      data: schoolTeacher,
+      data: schoolTeacher.toJSON(),
     };
   } catch (err) {
     if (err instanceof Error && 'issues' in err) {
@@ -61,7 +61,7 @@ export const getAllSchoolTeachers = async (ctx: AppContext) => {
     ctx.status = 200;
     ctx.body = {
       message: 'Teachers retrieved successfully',
-      data: schoolTeachers,
+      data: schoolTeachers.map((teacher) => teacher.toJSON()),
     };
   } catch (err) {
     ctx.status = 500;

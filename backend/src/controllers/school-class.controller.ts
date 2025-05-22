@@ -25,7 +25,7 @@ export const createSchoolClass = async (ctx: AppContext) => {
     ctx.status = 201;
     ctx.body = {
       message: 'Class created successfully',
-      data: schoolClass,
+      data: schoolClass.toJSON(),
     };
   } catch (err) {
     if (err instanceof Error && 'issues' in err) {
@@ -55,7 +55,7 @@ export const getAllSchoolClasses = async (ctx: AppContext) => {
     ctx.status = 200;
     ctx.body = {
       message: 'Classes retrieved successfully',
-      data: schoolClasses,
+      data: schoolClasses.map((schoolClass) => schoolClass.toJSON()),
     };
   } catch (err) {
     ctx.status = 500;
