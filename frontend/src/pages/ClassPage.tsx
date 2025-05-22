@@ -20,7 +20,7 @@ export function ClassPage() {
   const [formTeacher, setFormTeacher] = useState<string | null>(null);
 
   const onAddNewTeacher = useCallback(() => {
-    navigate("/teachers/add");
+    navigate("/teachers/add?from=class");
   }, [navigate]);
 
   return <PageContent>
