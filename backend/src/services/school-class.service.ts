@@ -1,3 +1,4 @@
+import { Model } from 'sequelize';
 import { SequelizeDb } from 'src/types/sequelize-db';
 import { ValidationError } from 'src/utils/ValidationError';
 
@@ -6,6 +7,15 @@ type CreateSchoolClassData = {
   name: string;
   teacherEmail: string;
 };
+
+type GetSchoolClassData = {
+  level: 'Primary 1' | 'Primary 2' | 'Primary 3' | 'Primary 4' | 'Primary 5' | 'Primary 6';
+  name: string;
+  formTeacher: {
+    name: string;
+    email: string;
+  };
+}
 
 export class SchoolClassService {
   private db: SequelizeDb;
@@ -31,17 +41,16 @@ export class SchoolClassService {
       ]);
     }
 
-    return await SchoolClass.create({
+    const schoolClass = await SchoolClass.create({
       ...data,
       schoolTeacherId: (schoolTeacher as any).id,
     });
-  }
 
-  async getAll() {
-    const { SchoolClass } = this.db;
-
-    return await SchoolClass.findAll({
-      attributes: ['level', 'name'],
+    return await schoolClass.reload({
+      attributes: {
+        exclude: ['id'],
+        include: ['level', 'name'],
+      },
       include: [
         {
           model: this.db.SchoolTeacher,
@@ -50,5 +59,23 @@ export class SchoolClassService {
         },
       ],
     });
+  }
+
+  async getAll() {
+    const { SchoolClass } = this.db;
+
+    return await SchoolClass.findAll({
+      attributes: {
+        exclude: ['id'],
+        include: ['level', 'name'],
+      },
+      include: [
+        {
+          model: this.db.SchoolTeacher,
+          as: 'formTeacher',
+          attributes: ['name', 'email'],
+        },
+      ],
+    }) as (Model<any, any> & GetSchoolClassData)[];
   }
 }

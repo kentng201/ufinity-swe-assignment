@@ -25,6 +25,7 @@
     "zod": "^3.25.12"
   },
   "devDependencies": {
+    "@faker-js/faker": "^9.8.0",
     "@types/jest": "^29.5.14",
     "@types/koa": "^2.15.0",
     "@types/koa-json": "^2.0.23",

@@ -1,7 +1,15 @@
+import { Model } from 'sequelize';
 import { SequelizeDb } from 'src/types/sequelize-db';
 import { ValidationError } from 'src/utils/ValidationError';
 
 type CreateSchoolTeacherData = {
+  name: string;
+  email: string;
+  contactNumber: string;
+  subject: 'English Language' | 'Mother Tongue Language' | 'Mathematics' | 'Science' | 'Art' | 'Music' | 'Physical Education' | 'Character and Citizenship Education';
+}
+
+type GetSchoolTeacherData = {
   name: string;
   email: string;
   contactNumber: string;
@@ -31,14 +39,23 @@ export class SchoolTeacherService {
       }]);
     }
 
-    return await SchoolTeacher.create(data);
+    const schoolTeacher = await SchoolTeacher.create(data);
+    return await schoolTeacher.reload({
+      attributes: {
+        exclude: ['id'],
+        include: ['name', 'email', 'contactNumber', 'subject'],
+      },
+    });
   }
 
   async getAll() {
     const { SchoolTeacher } = this.db;
 
     return await SchoolTeacher.findAll({
-      attributes: ['name', 'email', 'contactNumber', 'subject'],
-    });
+      attributes: {
+        exclude: ['id'],
+        include: ['name', 'email', 'contactNumber', 'subject'],
+      },
+    }) as (Model<any, any> & GetSchoolTeacherData)[];
   }
 }
