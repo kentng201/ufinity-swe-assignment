@@ -15,6 +15,8 @@ Assumptions:
 
 - I assumed the teacher email is unique and will not be duplicated. If the user tries to register with an email that already exists, an error message will be displayed.
 
+- Based on my past experience, different environments (such as development, test, and production) typically have separate `.env` files and distinct Sequelize configurations. However, in this project, I assumed that both the production and test environments use the same configuration and database connection, without separate environment-specific .env files.
+
 Take Note that:
 
 - MySQL is used as the database for this project.

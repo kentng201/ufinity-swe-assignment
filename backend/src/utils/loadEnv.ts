@@ -1,4 +1,19 @@
 import dotenv from 'dotenv';
 
-console.log('Loading environment variables from .env file');
-dotenv.config();
+const envFile = (() => {
+  switch (process.env.NODE_ENV) {
+    case 'development':
+      return '.env.development';
+    case 'test':
+      return '.env.test';
+    case 'production':
+      return '.env';
+    default:
+      return '.env';
+  }
+})();
+
+console.log(`Loading environment variables from ${envFile}`);
+dotenv.config({
+  path: envFile,
+});
