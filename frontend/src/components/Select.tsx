@@ -23,7 +23,7 @@ export type SelectProps<T> = {
 };
 
 export function Select<T>({
-  value,
+  // value,
   options,
   onSelect,
   placeholder,

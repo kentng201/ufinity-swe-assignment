@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo } from "react";
 import { Card } from "../components/Card";
 import { PageContent } from "../layouts/PageContent";
 import { Button } from "../components/Button";
@@ -78,7 +78,7 @@ export function ClassListPage() {
       <Card className="mx-8" style={{ height: "calc(100% - 20rem)" }}>
         {
           hasClass && (
-            <ClassTable classes={classes} />
+            <ClassTable classes={classes!} />
           )
         }
         {

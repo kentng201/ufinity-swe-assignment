@@ -1,5 +1,5 @@
-import { Suspense, lazy, useEffect } from "react";
-import { createBrowserRouter, useNavigate } from "react-router-dom";
+import { Suspense } from "react";
+import { createBrowserRouter } from "react-router-dom";
 import Loader from "../components/Loader";
 import { Container, Header } from "../layouts/Container";
 import { IndexPage } from "../pages/IndexPage";
@@ -33,7 +33,7 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: <Container />,
-    // errorElement: <ErrorPage />,
+    errorElement: <ErrorPage />,
     children: [
       {
         path: "/",
