@@ -97,9 +97,12 @@ The frontend will be running on `http://localhost:5173`.
 - The backend only allows these options to be selected. If the user tries to select any other option, an error message will be displayed.
 - The database will store the field as string, this allow flexibility in the future if we want to add more options yet keep the backend secure with validation.
 
-- I assumed the teacher email is unique and will not be duplicated. If the user tries to register with an email that already exists, an error message will be displayed.
-
 - Based on my past experience, different environments (such as development, test, and production) typically have separate `.env` files and distinct Sequelize configurations. However, in this project, I assumed that both the production and test environments use the same configuration and database connection, without separate environment-specific .env files.
+
+- When user attempt to register a teacher, the backend will check if the email/contact number/name already exists in the database. If it does, an error message will be displayed. This is to prevent duplicate entries in the database.
+- The system did not allow teachers contain duplicate name is because when user attempt to add a new class, the system will display a list of teachers with the same name. This is to prevent confusion for the user when selecting a teacher. If the user tries to add a new class and level with a teacher that already exists, an error message will be displayed.
+
+- When user attempt to add a new class, the backend will check if a same teacher with same class name and class level already exists in the database. If it does, an error message will be displayed. This is to prevent duplicate entries in the database.
 
 ## Take Note that
 
