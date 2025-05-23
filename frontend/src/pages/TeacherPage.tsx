@@ -67,6 +67,15 @@ export function TeacherPage() {
         }
       }).catch((error) => {
         console.error("Failed to create teacher: ", error);
+        if (error.status === 400 && error.data?.error === "Validation failed") {
+          const validationErrors = error.data.details.reduce((acc: Record<string, string>, issue: { field: string; message: string }) => {
+            acc[issue.field] = issue.message;
+            return acc;
+          }, {});
+          setErrorMessage(validationErrors);
+        } else {
+          alert('Unknown error occurred. Please try again later.');
+        }
       });
     }
   }, [validate, from, navigate]);

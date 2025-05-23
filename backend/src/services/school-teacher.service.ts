@@ -1,6 +1,7 @@
 import { Model } from 'sequelize';
 import { SequelizeDb } from 'src/types/sequelize-db';
 import { ValidationError } from 'src/utils/ValidationError';
+import { ZodIssue } from 'zod';
 
 type CreateSchoolTeacherData = {
   name: string;
@@ -27,16 +28,44 @@ export class SchoolTeacherService {
     const { SchoolTeacher } = this.db;
 
     // Check if the email already exists
-    const existingTeacher = await SchoolTeacher.findOne({
+    const existingTeacherEmail = await SchoolTeacher.findOne({
       where: { email: data.email },
     });
 
-    if (existingTeacher) {
-      throw new ValidationError([{
-        code: 'custom',
-        message: 'Email already exists',
-        path: ['email'],
-      }]);
+    // Check if the contact number already exists
+    const existingContactNumber = await SchoolTeacher.findOne({
+      where: { contactNumber: data.contactNumber },
+    });
+
+    // Check if the name already exists
+    const existingName = await SchoolTeacher.findOne({
+      where: { name: data.name },
+    });
+
+    if (existingTeacherEmail || existingContactNumber || existingName) {
+      const errors: ZodIssue[] = [];
+      if (existingTeacherEmail) {
+        errors.push({
+          code: 'custom',
+          message: 'Email already exists',
+          path: ['email'],
+        });
+      }
+      if (existingContactNumber) {
+        errors.push({
+          code: 'custom',
+          message: 'Contact number already exists',
+          path: ['contactNumber'],
+        });
+      }
+      if (existingName) {
+        errors.push({
+          code: 'custom',
+          message: 'Name already exists',
+          path: ['name'],
+        });
+      }
+      throw new ValidationError(errors);
     }
 
     const schoolTeacher = await SchoolTeacher.create(data);

@@ -24,9 +24,9 @@ export function ClassPage() {
   }, [isLoading, setLoading]);
 
   // forms
-  const [classLevel, setClassLevel] = useState<string>();
-  const [className, setClassName] = useState<string | null>(null);
-  const [formTeacher, setFormTeacher] = useState<string | null>(null);
+  const [level, setLevel] = useState<string>();
+  const [name, setName] = useState<string | null>(null);
+  const [teacherEmail, setTeacherEmail] = useState<string | null>(null);
 
   const onAddNewTeacher = useCallback(() => {
     navigate("/teachers/add?from=class");
@@ -35,26 +35,26 @@ export function ClassPage() {
   const [errorMessage, setErrorMessage] = useState<Record<string, string>>({});
   const validate = useCallback(() => {
     const errors: Record<string, string> = {};
-    if (!classLevel) {
-      errors.classLevel = "Class level is required";
+    if (!level) {
+      errors.level = "Class level is required";
     }
-    if (!className) {
-      errors.className = "Class name is required";
+    if (!name) {
+      errors.name = "Class name is required";
     }
-    if (!formTeacher) {
-      errors.formTeacher = "Form teacher is required";
+    if (!teacherEmail) {
+      errors.teacherEmail = "Form teacher is required";
     }
     setErrorMessage(errors);
     return Object.keys(errors).length === 0;
-  }, [classLevel, className, formTeacher]);
+  }, [level, name, teacherEmail]);
 
   const onSubmit = useCallback(() => {
     if (validate()) {
       setLoading(true);
       createClass({
-        level: classLevel! as 'Primary 1' | 'Primary 2' | 'Primary 3' | 'Primary 4' | 'Primary 5' | 'Primary 6',
-        name: className!,
-        teacherEmail: formTeacher!,
+        level: level! as 'Primary 1' | 'Primary 2' | 'Primary 3' | 'Primary 4' | 'Primary 5' | 'Primary 6',
+        name: name!,
+        teacherEmail: teacherEmail!,
       }).unwrap().then(() => {
         setLoading(false);
         navigate("/classes");
@@ -62,10 +62,18 @@ export function ClassPage() {
       ).catch((error) => {
         setLoading(false);
         console.error("Failed to create class: ", error);
-      }
-      );
+        if (error.status === 400 && error.data?.error === "Validation failed") {
+          const validationErrors = error.data.details.reduce((acc: Record<string, string>, issue: { field: string; message: string }) => {
+            acc[issue.field] = issue.message;
+            return acc;
+          }, {});
+          setErrorMessage(validationErrors);
+        } else {
+          alert('Unknown error occurred. Please try again later.');
+        }
+      });
     }
-  }, [validate]);
+  }, [validate, level, name, teacherEmail, createClass, setLoading]);
 
   return <PageContent>
     <div className="p-8">
@@ -79,7 +87,7 @@ export function ClassPage() {
         className="w-1/2 md:w-1/3"
         label="Class Level"
         placeholder="Select a level"
-        value={classLevel}
+        value={level}
         options={[
           { value: "Primary 1", label: "Primary 1" },
           { value: "Primary 2", label: "Primary 2" },
@@ -88,17 +96,17 @@ export function ClassPage() {
           { value: "Primary 5", label: "Primary 5" },
           { value: "Primary 6", label: "Primary 6" },
         ]}
-        onSelect={(value) => setClassLevel(value!)}
-        errorMessage={errorMessage.classLevel}
+        onSelect={(value) => setLevel(value!)}
+        errorMessage={errorMessage.level}
       />
       <Input
         className="w-1/2 md:w-1/3"
         label="Class Name"
         placeholder="Enter class name"
         type="text"
-        value={className ?? ""}
-        onChange={(text) => setClassName(text)}
-        errorMessage={errorMessage.className}
+        value={name ?? ""}
+        onChange={(text) => setName(text)}
+        errorMessage={errorMessage.name}
       />
       <Select
         className="w-1/2 md:w-1/3"
@@ -108,15 +116,15 @@ export function ClassPage() {
           value: teacher.email,
           label: teacher.name,
         }))}
-        value={formTeacher}
-        onSelect={(value) => setFormTeacher(value!)}
+        value={teacherEmail}
+        onSelect={(value) => setTeacherEmail(value!)}
         emptyDisplay={
           <div className="text-gray-500 text-sm">
             <div>No existing teachers.</div>
             <div className="cursor-pointer underline" onClick={onAddNewTeacher}>Add a teacher</div>
           </div>
         }
-        errorMessage={errorMessage.formTeacher}
+        errorMessage={errorMessage.teacherEmail}
       />
     </Card>
     <div className="flex flex-row justify-end gap-4 p-8">
