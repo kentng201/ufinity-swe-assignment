@@ -102,7 +102,7 @@ The frontend will be running on `http://localhost:5173`.
 - When user attempt to register a teacher, the backend will check if the email/contact number/name already exists in the database. If it does, an error message will be displayed. This is to prevent duplicate entries in the database.
 - The system did not allow teachers contain duplicate name is because when user attempt to add a new class, the system will display a list of teachers with the same name. This is to prevent confusion for the user when selecting a teacher. If the user tries to add a new class and level with a teacher that already exists, an error message will be displayed.
 
-- When user attempt to add a new class, the backend will check if a same teacher with same class name and class level already exists in the database. If it does, an error message will be displayed. This is to prevent duplicate entries in the database.
+- When user attempt to add a new class, the backend will check if a same teacher already exists in the class table. If it does, an error message will be displayed. This is to prevent duplicate entries in the database, and assuming all the class are assigned in a same time period.
 
 ## Take Note that
 

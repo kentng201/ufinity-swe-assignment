@@ -41,29 +41,18 @@ export class SchoolClassService {
       ]);
     }
 
-    // Check if the class already exists with the same level and name, and teacher email
-    const existingClass = await SchoolClass.findOne({
+    // Check if the teacher is already assigned to a class
+    const teacherIsExisted = await SchoolClass.findOne({
       where: {
-        level: data.level,
-        name: data.name,
         schoolTeacherId: (schoolTeacher as any).id,
       },
+      attributes: ['id'],
     });
-    if (existingClass) {
+    if (teacherIsExisted) {
       throw new ValidationError([
         {
           code: 'custom',
-          message: 'Class already exists with the same level, name, and teacher email',
-          path: ['level'],
-        },
-        {
-          code: 'custom',
-          message: 'Class already exists with the same level, name, and teacher email',
-          path: ['name'],
-        },
-        {
-          code: 'custom',
-          message: 'Class already exists with the same level, name, and teacher email',
+          message: 'Teacher already exists in a class',
           path: ['teacherEmail'],
         },
       ]);
