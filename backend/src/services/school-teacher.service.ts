@@ -1,4 +1,4 @@
-import { Model } from 'sequelize';
+import { Model, Op } from 'sequelize';
 import { SequelizeDb } from 'src/types/sequelize-db';
 import { ValidationError } from 'src/utils/ValidationError';
 import { ZodIssue } from 'zod';
@@ -27,45 +27,46 @@ export class SchoolTeacherService {
   async create(data: CreateSchoolTeacherData) {
     const { SchoolTeacher } = this.db;
 
-    // Check if the email already exists
-    const existingTeacherEmail = await SchoolTeacher.findOne({
-      where: { email: data.email },
-    });
+    const existingTeacher = await SchoolTeacher.findOne({
+      where: {
+        [Op.or]: [
+          { email: data.email },
+          { contactNumber: data.contactNumber },
+          { name: data.name },
+        ],
+      },
+    }) as Model<any, any> & GetSchoolTeacherData;
 
-    // Check if the contact number already exists
-    const existingContactNumber = await SchoolTeacher.findOne({
-      where: { contactNumber: data.contactNumber },
-    });
-
-    // Check if the name already exists
-    const existingName = await SchoolTeacher.findOne({
-      where: { name: data.name },
-    });
-
-    if (existingTeacherEmail || existingContactNumber || existingName) {
+    if (existingTeacher) {
       const errors: ZodIssue[] = [];
-      if (existingTeacherEmail) {
+
+      if (existingTeacher.email === data.email) {
         errors.push({
           code: 'custom',
           message: 'Email already exists',
           path: ['email'],
         });
       }
-      if (existingContactNumber) {
+
+      if (existingTeacher.contactNumber === data.contactNumber) {
         errors.push({
           code: 'custom',
           message: 'Contact number already exists',
           path: ['contactNumber'],
         });
       }
-      if (existingName) {
+
+      if (existingTeacher.name === data.name) {
         errors.push({
           code: 'custom',
           message: 'Name already exists',
           path: ['name'],
         });
       }
-      throw new ValidationError(errors);
+
+      if (errors.length > 0) {
+        throw new ValidationError(errors);
+      }
     }
 
     const schoolTeacher = await SchoolTeacher.create(data);
