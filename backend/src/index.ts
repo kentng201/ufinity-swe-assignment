@@ -16,7 +16,13 @@ const app = new Koa();
 app.use(logger());
 app.use(json());
 app.use(bodyParser());
-app.use(cors());
+app.use(cors({
+  origin: (ctx) => {
+    const ALLOW_ORIGINS = process.env.ALLOW_ORIGINS ? process.env.ALLOW_ORIGINS.split(',') : [];
+    const requestOrigin = ctx.request.header.origin;
+    return ALLOW_ORIGINS.includes(requestOrigin) ? requestOrigin : 'http://localhost:5173';
+  },
+}));
 app.use(databaseMiddleware);
 app.use(router.routes());
 app.use(router.allowedMethods());
